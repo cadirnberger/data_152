@@ -1,0 +1,144 @@
+---
+title: "DATA 152 - FA25 - HW4B"
+author: "Caden Dirnberger"
+date: "Due Sept 26, 2025 at 9:00pm in Canvas"
+output:
+  html_document:
+    toc: true          
+    toc_depth: 2       
+    toc_float: true    
+    number_sections: false
+    theme: simplex       
+---
+
+<center>![](https://www.commonapp.org/static/35484d03dd6594af4cf166da5b915739/willamette-university_298.jpg){width="92"}</center>
+
+**Instructions:** 1) Rename this file using your last name and first name. 2) Change "YOUR NAME HERE" in the preamble to your name. 3) Complete the following questions. Once you're done, knit this file into an HTML and submit the HTML in Canvas.
+
+**Note #1:** This HW has two parts--the zyBooks assignment (HW3A--worth 30 points) and the following questions (worth 70 points).\
+
+**Note #2:** Credit will not be given unless you show your work. (It also makes it easier to receive partial credit.) Even if you do your work on paper and use R as a calculator, you must show the algebraic calculations that led to your answer.
+
+------------------------------------------------------------------------
+
+## QUESTION 1 [20]
+
+A wildlife biologist examines frogs for a genetic trait he suspects may be linked to sensitivity to industrial toxins in the environment. Previous research had established that this trait is usually found in 1 of every 8 frogs. He collects and examines a dozen frogs. If the frequency of the trait has not changed, what's the probability that he finds the trait in...
+
+### 1A [5]
+
+**None of the 12 frogs?**
+
+```{r}
+dbinom(0, 12, 0.125)
+
+```
+
+**ANSWER:** 0.2014172
+
+### 1B [5]
+
+**At least 2 frogs?**
+
+```{r}
+1 - pbinom(1, size = 12, prob = 0.125)
+
+```
+
+**ANSWER:** 0.4532961
+
+### 1C [5]
+
+**3 or 4 frogs?**
+
+```{r}
+dbinom(4, 12, 0.125)+dbinom(3,12, 0.125)
+
+```
+
+**ANSWER:** 0.1707139
+
+### 1D [5]
+
+**no more than 4 frogs?**
+
+```{r}
+pbinom(4, size=12 ,prob=0.372)
+
+```
+
+**ANSWER:**  0.5190417
+
+------------------------------------------------------------------------
+
+## QUESTION 2 [30]
+
+![](images/clipboard-2859136471.png)
+
+A sporting goods store announces a “Wheel of Savings” sale. Customers select the merchandise they want to purchase, then at the cash register they spin a wheel (pictured above) to determine the size of the discount they will receive. The wheel is divided into 12 regions, like a clock. Six of those regions are red and award a 10% discount. The three white regions award a 20% discount and two blue regions a 40% discount. The remaining region is gold, and a customer whose lucky spin lands there gets a 100% discount—the merchandise is free!
+
+### 2A [5]
+
+What is the probability that a customer gets at least a 40% discount?
+
+```{r}
+(2+1)/12
+
+```
+
+**ANSWER:** 0.25
+
+### 2B [5]
+
+What is the probability that two customers in a row get only 10% discounts?
+
+```{r}
+(6/12)*(6/12)
+
+```
+
+**ANSWER:** 0.25
+
+### 2C [5]
+
+What is the probability that three consecutive customers all get 20% discounts?
+
+```{r}
+(3/12)*(3/12)*(3/12)
+
+```
+
+**ANSWER:** 0.015625
+
+### 2D [5]
+
+What is the probability that none of the first four customers gets a discount over 20%?
+
+```{r}
+(9/12)^4
+
+```
+
+**ANSWER:** 0.3164062
+
+### 2E [5]
+
+What is the probability that the first gold winner (100%) is the fifth customer in line?
+
+```{r}
+(11/12)^4*(1/12)
+
+```
+
+**ANSWER:**  0.0588389
+
+### 2F [5]
+
+What is the probability that there is at least one gold winner among the first six customers?
+
+```{r}
+1 - (11/12)^6
+
+```
+
+**ANSWER:** 0.4067078

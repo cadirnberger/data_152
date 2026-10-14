@@ -1,0 +1,168 @@
+---
+title: "DATA 152 - FA25 - HW5B"
+author: "Caden Dirnberger"
+date: "Due Oct 16, 2025 at 9:00pm in Canvas"
+output:
+  html_document:
+    toc: true          
+    toc_depth: 2       
+    toc_float: true    
+    number_sections: false
+    theme: simplex       
+---
+
+<center>![](https://www.commonapp.org/static/35484d03dd6594af4cf166da5b915739/willamette-university_298.jpg){width="92"}</center>
+
+**Instructions:** 1) Rename this file using your last name and first name. 2) Change "YOUR NAME HERE" in the preamble to your name. 3) Complete the following questions. Once you're done, knit this file into an HTML and submit the HTML in Canvas.
+
+**Note #1:** This HW has two parts--the zyBooks assignment (HW5A--worth 50 points) and the following questions (worth 50 points).  This HW also features a bonus problem worth up to 10 points.  Its completion is optional.\
+
+**Note #2:** Credit will not be given unless you show your work. (It also makes it easier to receive partial credit.) Even if you do your work on paper and use R as a calculator, you must show the algebraic calculations that led to your answer.
+
+------------------------------------------------------------------------
+
+## QUESTION 1 [30]
+
+In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men Ages 30 - 34 group, while Mary competed in the Women Ages 25 - 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). They are curious about how they did within their respective groups. Can you help them? Here is some information on the performance of their groups:
+
+The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a standard deviation of 583 seconds.
+
+The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a standard deviation of 807 seconds.
+
+The distributions of finishing times for both groups are approximately Normal.
+
+**Remember: a better performance corresponds to a faster finish.**
+
+
+### 1A [10]
+
+What are the Z-scores for Leo's and Mary's finishing times? 
+
+```{r}
+leo_z = (4948-4313)/583
+mary_z = (5513-5261)/807
+leo_z
+mary_z
+```
+
+**ANSWER:** leo= 1.089194
+mary = 0.3122677
+
+
+### 1B [5]
+
+Did Leo or Mary rank better in their respective groups? Explain your reasoning.
+
+**ANSWER:** mary because they are they have a lower z_score so the have are closer to the mean then leo. 
+
+
+### 1C [5]
+
+What percent of the triathletes did Leo finish faster than in his group?
+
+```{r}
+
+1 - pnorm(4948,4313,583)
+
+```
+
+**ANSWER:** leo was faster than 13% of the other racers
+
+
+### 1D [5]
+
+What percent of the triathletes did Mary finish faster than in her group?
+
+```{r}
+1 - pnorm(5513,5261,807)
+
+```
+
+**ANSWER:** mary was fast then 38% of the other racers
+
+
+### 1E [5]
+
+Based on the distributions provided, what is the cutoff time for the fastest 5% of athletes in the men's group, i.e. those who took the shortest 5% of time to finish?  **Hint:** faster times $\Rightarrow$ lower time values
+
+```{r}
+qnorm(.05,4313, 583)
+
+```
+
+**ANSWER:** the top 5% hada time of 3354 s / 55 min 54 s 
+
+------------------------------------------------------------------------
+
+## QUESTION 2 [5]
+
+Let's consider the air quality index (AQI) in Calvinopolis (the location of the prestigious Calvin Deutschbein University).  The AQI is a measure of how polluted the air is, and higher values correspond to worse air quality conditions. Suppose the city's AQI is normally distributed with an average AQI of 50 (moderate air quality) and a standard deviation of 10. You are interested in analyzing the distribution of AQI values to assess the air quality and its impact on public health.
+
+
+What percentage of days experience an AQI worse than 70 (indicating "unhealthy for sensitive groups")?
+
+```{r}
+1- pnorm(70,50,10)
+
+```
+
+**ANSWER:** 2.3% of days experience a worse AQI of 70
+
+------------------------------------------------------------------------
+
+## QUESTION 3 [15]
+
+A TV news reporter says that a proposed constitutional amendment is likely to win approval in the upcoming election because a poll of 1505 likely voters indicated that 52% would vote in favor.  The reporter goes on to say that the margin of error for this poll was 3%.
+
+### 2A [5]
+Explain why the poll was actually inconclusive.
+
+**ANSWER:** it's inconclusive because the margin of error includes values below 50%,  we can’t be confident the majority supports the amendment.
+
+
+### 2B [10]
+What confidence level did the pollsters use?
+
+```{r}
+(0.52*(1-0.52))/1505
+sqrt(0.0001658)
+0.03/0.0129
+pnorm(2.33)
+0.9901-(1-0.9901)
+
+```
+
+**ANSWER:** they used a 98% confidence level
+
+------------------------------------------------------------------------
+
+## BONUS [+10]
+
+### BONUS PART I [+4]
+
+The weight of potato chips in a medium sized bag is stated to be 10oz.  The amount that the packaging machine puts in these bags is believed to have a normal distribution with mean 10.2oz and standard deviation 0.12oz.  
+
+What fraction of all bags sold are underweight?
+
+```{r}
+pnorm(10, mean = 10.2, sd = 0.12)
+
+
+```
+
+**ANSWER:** 4.8% of all bags are underweight.
+
+
+### BONUS PART II [+6]
+What's the probability that the mean weight of the 3 bags is below the stated amount?
+
+```{r}
+sqrt(3)
+.12/1.732
+(10-10.2)/0.0693
+pnorm(-2.886)
+
+```
+
+**ANSWER:** 0.2% chance that the average weight of 3 randomly selected bags is below 10 oz
+

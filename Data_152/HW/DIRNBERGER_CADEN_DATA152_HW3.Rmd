@@ -1,0 +1,130 @@
+---
+title: "DATA 152 - FA25 - HW3B"
+author: "Caden Dirnberger "
+date: "Due Sept 18, 2025 at 9:00pm in Canvas"
+output:
+  html_document:
+    toc: true          
+    toc_depth: 2       
+    toc_float: true    
+    number_sections: false
+    theme: simplex       
+---
+
+<center>![](https://www.commonapp.org/static/35484d03dd6594af4cf166da5b915739/willamette-university_298.jpg){width="92"}</center>
+
+**Instructions:** 1) Rename this file using your last name and first name. 2) Change "YOUR NAME HERE" in the preamble to your name. 3) Complete the following questions. Once you're done, knit this file into an HTML and submit the HTML in Canvas.
+
+**Note #1:** This HW has two parts--the zyBooks assignment (HW3A--worth 30 points) and the following questions (worth 70 points). \
+
+**Note #2:** No credit will be given if you don’t show your work. (It also makes it easier to receive partial credit.) Even if you do your work on paper and use R as a calculator, you must show the algebraic calculations that led to your answer.
+
+------------------------------------------------------------------------
+
+## QUESTION 1 [25]
+
+A commuter must pass through 5 traffic lights on the way to work and will have to stop at each one that is red. She estimates the probability model for the \# of red lights she hits to be as follows:
+
+```{r}
+library(tidyverse)
+prob_mod=tibble(number_of_reds=0:5,probs=c(0.06,0.16,0.33,0.26,0.16,0.03)) 
+prob_mod
+```
+
+### 1A [10]
+
+How many red lights should she expect to hit each day?
+
+```{r}
+0*.06+1*.16+2*.33+3*.26+4*.16+5*.03
+
+```
+
+**ANSWER:** 2.39
+
+### 1B [10]
+
+What is the variance?
+
+```{r}
+#(0-2.38)^2(.06)+(1−2.39)^2(0.16)+(2−2.39)^2(0.33)+(3−2.39)^2(0.26)+(4−2.39)^2(0.16)+(5−2.39)^2(0.03)+(3−2.39)^2(0.26)+(4−2.39)^2(.16)+(5-2.38)^2(.03)
+```
+
+**ANSWER:** 1.42
+
+### 1C [5]
+
+What is the standard deviation?
+
+```{r}
+#√1.42
+
+```
+
+**ANSWER:** 1.19
+
+------------------------------------------------------------------------
+
+## QUESTION 2 [15]
+
+A consumer organization inspecting new cars found that many had appearance defects (dents, scratches, paint chips, etc). While none had more than 3 of these defects, 7% had three, 11% had two, and 21% had one defect.
+
+### 2A [5]
+
+What percent of cars didn't have any defects?
+
+```{r}
+1-(.07+.11+.21)
+```
+
+**ANSWER:**.61
+
+### 2B [10]
+
+What is the mean number of defects for new cars?  **Hint:** write out the probability model and make sure you aren't missing any cases in your expected value calculation.
+
+```{r}
+.07*3+.11*2+.21*1
+```
+
+**ANSWER:** 0.64
+
+------------------------------------------------------------------------
+
+## QUESTION 3 [30]
+
+In a multiple choice exam, there are 5 questions and 4 choices for each questions (a,b,c,d).  James Gore has not studied for this exam and decides to randomly guess the answers.  What is the probability that...
+
+### 3A [10]
+
+the first question he gets right is the 5th question?
+
+```{r}
+.75^4*.25
+
+```
+
+**ANSWER:** 0.079
+
+### 3B [10]
+
+he gets all of the questions right?
+
+```{r}
+.25^5
+
+```
+
+**ANSWER:** 0.00098
+
+### 3C [10]
+
+he gets at least one question right?
+
+```{r}
+1-.75^5
+
+```
+
+**ANSWER:** 0.76
+------------------------------------------------------------------------

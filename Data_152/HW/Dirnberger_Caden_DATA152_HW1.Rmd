@@ -1,0 +1,205 @@
+---
+title: "DATA 152 - FA25 - HW1"
+author: "Caden Dirnberger"
+date: "Due Sept 5, 2025 at 9:00pm in Canvas"
+output:
+  html_document:
+    toc: true          
+    toc_depth: 2       
+    toc_float: true    
+    number_sections: false
+    theme: simplex       
+---
+
+<center>![](https://www.commonapp.org/static/35484d03dd6594af4cf166da5b915739/willamette-university_298.jpg){width="92"}</center>
+
+**Instructions:** 1) Rename this file using your last name and first name. 2) Change "YOUR NAME HERE" in the preamble to your name. 3) Complete the following questions. Once you're done, knit this file into an HTML and submit the HTML in Canvas.
+
+Note: You may want to switch to Visual mode before beginning the assignment since it's more readable than the source code version. Also, SAVE & KNIT YOUR WORK OFTEN.
+
+------------------------------------------------------------------------
+
+## **QUESTION 1 [30]**
+
+I want to learn about you! Please answer the following questions:
+
+-   **What year are you at Willamette (1st yr, 2nd yr, ...)?**\
+    2nd yr
+
+-   **What is your major?**\
+    computer science and data science
+
+-   **What are your career goals? (No worries if you're unsure. You can answer this as exactly or inexactly as you wish.)**\
+    code video games or make my own video games.
+
+-   **Do you participate in any clubs, sports, volunteer orgs, etc at Willamette?  If so, which ones?**\
+    yes football
+
+-   **Tell me [3]{.underline} interesting facts about you.**\
+    I love to scuba Dive
+    I love video games
+    I love turtles
+
+------------------------------------------------------------------------
+
+## **QUESTION 2 [10]**
+
+Why are you taking this class? What are you most looking forward to in this class?
+
+**ANSWER:** I am taking this class to learn more about data science. i am looking forward to coding with R
+
+------------------------------------------------------------------------
+
+## **QUESTION 3 [10]**
+
+Fill in the [when2meet form](https://tinyurl.com/data152-fa25-officehrs) to give me (Dr. Gore) an idea of when I should set my office hours.  I realize some of you will are finalizing your course schedules in the first week and things may change, but this will give me a general idea of your availability.  We can adjust as needed during the semester.
+
+**ANSWER:** [nothing to fill in here, but I will be checking the poll results to see if you filled it out, so make sure you include your name when you do complete it.]
+
+------------------------------------------------------------------------
+
+## **QUESTION 4 [50]**
+
+It's no secret that colleges in the US have been preparing for an "enrollment cliff" as a result of declining birthrates, political factors over the ROI of college, etc.  Thus, enrollment is of peak interest. (For more information, check out this article from [Forbes](https://www.forbes.com/sites/davidrosowsky/2024/02/03/the-cliffs-of-higher-ed-whos-going-over-and-why/).)
+
+Make sure the "us_district_enrollment_2016-2023.txt" file is in your working directory.  (Not sure about your working directory?  Run `getwd()` to find out where R is looking for the file.)  Then complete the following problems to dig further into enrollment trends.
+
+------------------------------------------------------------------------
+
+### 4A [5]
+
+Uncomment the code below.  Replace my working directory with your working directory in the `my_working_dir` variable.  Then run the entire code block below to read in the dataset.  Note: Make sure your working directory has a slash at the end of it.
+
+```{r}
+library(tidyverse)
+ my_working_dir="C:/Users/caden/Data_152/Datasets/"
+ the_file="us_district_enrollment_2016-2023.txt"
+# 
+ full_path=paste(my_working_dir,the_file,sep="")
+# 
+ ds=read_csv(full_path, col_types = 'cfddddddd')
+
+```
+
+------------------------------------------------------------------------
+
+### 4B [5]
+
+Print the first 20 lines of the dataset using `head()`.
+
+```{r}
+head(ds)
+
+```
+
+------------------------------------------------------------------------
+
+### 4C [5]
+
+Use `names()` to print the names of the columns in the dataset.
+
+```{r}
+names(ds)
+
+```
+
+------------------------------------------------------------------------
+
+### 4D [5]
+
+Run `summary()` on the `ds` dataset.
+
+```{r}
+summary(ds)
+
+```
+
+------------------------------------------------------------------------
+
+### 4E [5]
+
+Let's customize the analysis. Filter `ds` to only include data for YOUR home state. (If your home state isn't US-based, you may pick a random state.)  Name this dataset `enroll`.
+
+```{r}
+enroll = ds %>% filter(State== "MONTANA")
+
+```
+
+------------------------------------------------------------------------
+
+### 4F [5]
+
+How many rows and columns are in `enroll`?
+
+```{r}
+view(enroll)
+ncol(enroll)
+nrow(enroll)
+# 9 columns and 493 rows
+```
+
+------------------------------------------------------------------------
+
+### 4G [5]
+
+Which district had the highest enrollment in the 2022-2023 school year? Use `arrange` to answer this question.
+
+```{r}
+arrange(enroll,desc(`Total Students All Grades  2022-23`) )
+
+```
+
+**ANSWER:** Billings ELEM
+
+------------------------------------------------------------------------
+
+### 4H [5]
+
+Uncomment and run the following code to reshape the `enroll` dataset. 
+
+```{r}
+ enroll2=enroll %>%
+ 	pivot_longer(
+ 		cols=`Total Students All Grades  2022-23`:`Total Students All Grades  2016-17`,
+ 		names_to="School_Year",
+ 		values_to="Enrollment"
+ 	) %>%
+ 	mutate(
+ 		School_Year=str_replace_all(
+ 			str_remove(School_Year,"Total Students All Grades  "),
+ 			"-","-20")
+	)
+
+ head(enroll2,15)
+```
+
+
+Using `enroll2`, create a summary table that shows the median district enrollment for each year represented in `enroll2`.  Hint: `group_by`, `summarize`
+
+```{r}
+med_enroll = enroll2 %>% group_by(District, School_Year)  %>% summarize(Median_Enrollment = median(Enrollment, na.rm = TRUE))
+
+
+```
+
+------------------------------------------------------------------------
+
+### 4I [10]
+
+Create a graph of your choosing that showcases enrollment trends in your home state over time.  Make sure your graph is interpretable and clearly labeled.
+
+```{r}
+med_enroll %>% ggplot(aes(x = School_Year, y = Median_Enrollment, group = District, )) +
+  geom_line() +
+  labs(
+    title = paste("Enrollment Trends in Montana"),
+    x = "School Year",
+    y = "Total Enrollment"
+  ) +
+  theme_minimal()
+
+```
+
+------------------------------------------------------------------------
+
+Congrats--You're done with your first DATA 152 HW!  Click the "Knit" button at the top of the window to create an HTML rendering of this document. Then submit BOTH the Rmd and HTML to Canvas.

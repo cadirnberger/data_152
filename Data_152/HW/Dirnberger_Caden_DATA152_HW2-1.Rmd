@@ -1,0 +1,104 @@
+---
+title: "DATA 152 - FA25 - HW2"
+author: "YOUR NAME HERE"
+date: "Due Sept 11, 2025 at 9:00pm in Canvas"
+output:
+  html_document:
+    toc: true          
+    toc_depth: 2       
+    toc_float: true    
+    number_sections: false
+    theme: simplex       
+---
+
+<center>![](https://www.commonapp.org/static/35484d03dd6594af4cf166da5b915739/willamette-university_298.jpg){width="92"}</center>
+
+**Instructions:** 1) Rename this file using your last name and first name. 2) Change "YOUR NAME HERE" in the preamble to your name. 3) Complete the following questions. Once you're done, knit this file into an HTML and submit the HTML in Canvas.
+
+Note: This HW has two parts--the zyBooks assignment (worth 50 points) and the following questions (worth 50 points).
+
+------------------------------------------------------------------------
+53
+
+## QUESTION 1 [35]
+Everyone enjoys the perfect bag of microwave popcorn, but we all know how hard it can be to get the perfect bag--too long and all the kernels are burnt; too short and kernels are left unpopped. A student decides to design a multi-factor experiment to explore the impact of microwave power and cooking time on her favorite brand of microwave popcorn. She will use 2 power settings on her microwave (high or low), and she plans to use 3 different times (3, 4, or 5 minutes). To evaluate the quality of the popcorn, the student will get a total count of the number of bad kernels in each bag after being in the microwave. ("Bad" kernels=# of unpopped kernels in the bag + the \# of burned popped kernels.) Thus, a larger bad kernel count means a less optimal microwaving strategy. The student buys a large box containing 24 bags of microwave popcorn to use in the experiment.
+
+### 1A [5]
+
+Identify the factors in this experiment and list their respective levels.
+
+**ANSWER:** 
+Power (2 levels): High, Low.
+
+Time (3 levels): 3, 4, 5 minutes
+
+### 1B [5]
+
+What is the response variable?
+
+**ANSWER:** the bad kernels
+
+### 1C [5]
+
+What are the experimental units?
+
+**ANSWER:** the individual bags
+
+### 1D [20]
+
+1. Create a full factorial design matrix for this experiment.  Since she will be using the same microwave for the entire experiment, she doesn't have a true blocking variable in this case. Suppose her default recipe involves microwaving the bag on high for 3.5min.  Your design must feature randomization, a control split, and 3 replicates per split.  
+
+2. Name the final design `final_doe`.
+
+3. Uncomment the `final_doe %>% print(n=Inf)` line to print the entire data table.
+
+```{r}
+# write code below
+library(tidyverse)
+power = c("High", "Low")
+time = c(3, 4, 5)
+
+center_point = expand_grid(
+  power =  "Medium",
+  time = 4
+)
+default = tibble(
+  power = "High",
+  time = 3.5
+)
+pds = expand_grid(
+  power,
+  time
+)
+pds2 = bind_rows(
+  pds, default, center_point
+)
+final_doe = pds2 %>%
+  slice_sample(prop=1) %>%
+  expand_grid( replicate = 1:3)%>%
+  arrange(power)
+
+
+
+final_doe %>% print(n=Inf)
+```
+
+
+------------------------------------------------------------------------
+
+## QUESTION 2 [15]
+
+We've talked quite a bit about the importance of ethics in data collection.  Choose one of the following recent events and give a 4-5 sentence summary of what happened and what elements of the research were unethical:
+
+- Cambridge Analytica Scandal (2018)
+- Duke University Cancer Genomics Scandal (2006–2010)
+- Facebook Emotional Contagion Study (2014)
+
+
+**ANSWER:** Facebook Emotional Contagion Study
+Facebook did a study into "emotional contagion" with nearly 700,000 users. Facebook altered their news feed to do the experiment. The unethical part is  the experiment was not a totally agreed with. Facebook put the agreement in the general terms. what is also unethical is the trauma they caused by doing this.
+
+
+------------------------------------------------------------------------
+
+Congrats--You're done with your first HW2!  Click the "Knit" button at the top of the window to create an HTML rendering of this document. Then submit the HTML file in Canvas.

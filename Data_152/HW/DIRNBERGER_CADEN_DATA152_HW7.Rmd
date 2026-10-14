@@ -1,0 +1,167 @@
+---
+title: "DATA 152 - FA25 - HW7B"
+author: "Caden Dirnberger"
+date: "Due Oct 30, 2025 at 9:00pm in Canvas"
+output:
+  html_document:
+    toc: true          
+    toc_depth: 2       
+    toc_float: true    
+    number_sections: false
+    theme: simplex       
+---
+
+<center>![](https://www.commonapp.org/static/35484d03dd6594af4cf166da5b915739/willamette-university_298.jpg){width="92"}</center>
+
+**Instructions:** 1) Rename this file using your last name and first name. 2) Change "YOUR NAME HERE" in the preamble to your name. 3) Complete the following questions. Once you're done, knit this file into an HTML and submit the HTML in Canvas.
+
+**Note #1:** This HW has two parts--the zyBooks assignment (HW7A--worth 20 points) and the following questions (worth 80 points).\
+
+**Note #2:** Credit will not be given unless you show your work. (It also makes it easier to receive partial credit.) Even if you do your work on paper and use R as a calculator, you must show the algebraic calculations that led to your answer.
+
+------------------------------------------------------------------------
+
+## QUESTION 1 [40]
+
+The service life of a battery used in a cardiac pacemaker is assumed to be normally distributed. A random sample of 10 batteries is subjected to an accelerated life test by running them until failure. The lifetimes reflected in the `lifetimes` variable below are obtained (unit: hours).
+
+```{r}
+lifetimes=c(25.5,26.1,26.8,23.2,24.2,28.4,25.0,27.8,27.3,25.7)
+```
+
+The manufacturer wants to be certain that the mean battery life exceeds 25 hours. What conclusions can be drawn from these data at $\alpha$=0.05?
+
+### 1A [10]
+
+Let $\mu$ be the true average life span of the cardiac pacemaker batteries. What are the null and alternative hypotheses?
+
+**ANSWER:** null: x=25
+            alt: x>25
+
+### 1B [10]
+
+Are the assumptions for a one-sample t-test satisfied? Justify your answer.
+
+**ANSWER:** yes Normal:"Normally distributed", Independent: each battery is it's own, random:"Random sample"
+
+### 1C [5]
+
+Perform a 1-sample t-test using `t.test`. Make sure you print the output of the test.
+
+```{r}
+t.test(lifetimes, mu= 25, alternative = "greater")
+```
+
+### 1D [5]
+
+Based on your t-test results, state your conclusion in context of the original problem.
+
+**ANSWER:** yes the mean battery life exceeds 25 hours
+
+### 1G [5]
+
+What is a Type I error in this context?
+
+**ANSWER:** A Type I error would mean concluding that the average battery life is greater than 25 hours when the true average battery life is 25 hours.
+
+### 1H [5]
+
+What is a Type II error in this context?
+
+**ANSWER:** A Type II error would mean concluding that the average battery life is equal to  25 hours when the true average battery life is greater 25 hours
+
+------------------------------------------------------------------------
+
+## QUESTION 2 [40]
+
+Two machines are used for filling glass bottles with a soft drink beverage called Dr. Deutschbein (similar taste to Dr. Pepper but with 5x the caffeine content). Do both machines fill to the same net contents?
+
+### 2A [10]
+
+What are your null and alternative hypotheses?
+
+```{r}
+m= 1
+m2 =1
+null = m==m2
+alt = m!=m2
+```
+
+**ANSWER:** null: m=m2
+            alt: m≠m2
+
+### 2B [2.5]
+
+Suppose you sample 25 bottles from both machines and get the following results:
+
+-   $\bar{x}_1$=2.04 liters
+
+-   $s_1$=0.010 liters
+
+-   $\bar{x}_2$=2.07 liters
+
+-   $s_2$=0.015 liters
+
+What is the observed difference between the sample means?
+
+```{r}
+m= 2.04
+msd= .010
+m2 = 2.07
+m2sd= .015
+md = m - m2
+md
+```
+
+**ANSWER:** the different  mean is 0.03 liters
+
+### 2C [5]
+
+What is the standard error of $\bar{X}_1-\bar{X}_2$?
+
+```{r}
+mse = sqrt(msd^2/25 + m2sd^2/25)
+mse
+```
+
+**ANSWER:**  the standard error is 0.003605551 liters
+
+### 2D [7.5]
+
+Carry out a 2-sampled t-test. For simplicity, you may use the simplified formula for degrees of freedom: $df=n_1+n_2-2$. What is the p-value?
+
+```{r}
+m_t_score= md/mse
+mn=25
+m2n=25
+mdf= mn+m2n - 2
+m_os = pt(m_t_score,mdf)
+m_ts = m_os+m_os
+m_ts
+
+
+```
+
+**ANSWER:** the p-value  is 7.250788e-11
+
+### 2E [5]
+
+Based on the results in 2D, what is your conclusion in context of the original problem?
+
+**ANSWER:** With the very small p-value from 2D, we reject the null the machines differ in their average fill, and machine 2 is filling more than machine 1.
+
+### 2F [10]
+
+Create a 95% confidence interval for the difference in average fill levels. Does this confirm or contradict your answer in 2E?
+
+```{r}
+m_t_crit = qt(0.975, mdf)
+m_lower = md - m_t_crit * mse
+m_upper = md + m_t_crit * mse
+
+c(m_lower, m_upper)
+```
+
+**ANSWER:** Because the entire interval is below 0, we are 95% confident that Machine 1 fills less than Machine 2 on average. This confirms our conclusion from 2E that the two machines do not fill to the same average level.
+
+------------------------------------------------------------------------
